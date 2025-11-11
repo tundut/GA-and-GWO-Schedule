@@ -1,16 +1,21 @@
-import csv
+import csv, os
 from tkinter import messagebox
 
 def load_csv(path):
     with open(path, encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
-def load_all_data():
-    teachers_data = load_csv("data/teachers.csv")
-    classes_data = load_csv("data/classes.csv")
-    subjects_data = load_csv("data/subjects.csv")
-    rooms_data = load_csv("data/rooms.csv")
-    timeslots_data = load_csv("data/timeslots.csv")
+def load_all_data(folder="data_TH1(small)"):
+    """Đọc dữ liệu từ thư mục được chọn (TH1, TH2, TH3, TH4)."""
+    try:
+        teachers_data = load_csv(os.path.join(folder, "teachers.csv"))
+        classes_data = load_csv(os.path.join(folder, "classes.csv"))
+        subjects_data = load_csv(os.path.join(folder, "subjects.csv"))
+        rooms_data = load_csv(os.path.join(folder, "rooms.csv"))
+        timeslots_data = load_csv(os.path.join(folder, "timeslots.csv"))
+    except FileNotFoundError as e:
+        messagebox.showerror("Lỗi", f"Không tìm thấy file trong thư mục: {folder}\n{e}")
+        return None
 
     teachers = {
         t["TeacherID"]: {
@@ -31,10 +36,7 @@ def load_all_data():
     }
 
     subjects = {
-        s["SubjectName"]: {
-            "type": s["SubjectType"],
-            "name": s.get("SubjectDisplayName", s["SubjectName"])
-        }
+        s["SubjectName"]: s["SubjectType"]
         for s in subjects_data
     }
 
@@ -45,7 +47,6 @@ def load_all_data():
 
     timeslots = [t["SlotID"] for t in timeslots_data]
 
-    # 🔹 Trả thêm mapping tên
     teacher_names = {t["TeacherID"]: t.get("TeacherName", t["TeacherID"]) for t in teachers_data}
     class_names = {c["ClassID"]: c.get("ClassName", c["ClassID"]) for c in classes_data}
     subject_names = {s["SubjectName"]: s.get("SubjectDisplayName", s["SubjectName"]) for s in subjects_data}
