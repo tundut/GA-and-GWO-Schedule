@@ -6,7 +6,7 @@ def load_csv(path):
         return list(csv.DictReader(f))
 
 def load_all_data(folder="data_TH1(small)"):
-    """Đọc dữ liệu từ thư mục được chọn (TH1, TH2, TH3, TH4)."""
+    """Đọc dữ liệu từ thư mục được chọn (TH1, TH2, TH3)."""
     try:
         teachers_data = load_csv(os.path.join(folder, "teachers.csv"))
         classes_data = load_csv(os.path.join(folder, "classes.csv"))

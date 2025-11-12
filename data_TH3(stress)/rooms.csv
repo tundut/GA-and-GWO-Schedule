@@ -1,0 +1,16 @@
+RoomID,Capacity,RoomType
+R1,41,PE
+R2,41,PE
+R3,26,Lecture
+R4,36,Lab
+R5,49,Lecture
+R6,27,Lecture
+R7,30,PE
+R8,44,Lecture
+R9,42,PE
+R10,33,Lecture
+R11,41,Lecture
+R12,39,Lab
+R13,34,Lecture
+R14,38,Lecture
+R15,30,Lab
