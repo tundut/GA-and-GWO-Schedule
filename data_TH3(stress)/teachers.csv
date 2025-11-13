@@ -1,0 +1,16 @@
+TeacherID,TeacherName,Subjects,AvailableSlots
+T1,Giảng viên 1,S6|S17|S16,T2-S|T3-C|T2-C|T4-C
+T2,Giảng viên 2,S4|S14|S13,T4-S|T4-C|T2-S|T7-S|T5-C
+T3,Giảng viên 3,S1|S7,T7-S|T3-S|T5-C|T7-C|T4-S
+T4,Giảng viên 4,S8|S5|S1,T5-C|T4-S|T7-C|T5-S
+T5,Giảng viên 5,S15|S12|S7,T3-S|T5-S|T2-S|T3-C|T7-C
+T6,Giảng viên 6,S4|S10|S12|S2,T5-C|T5-S|T7-S|T2-C|T4-S
+T7,Giảng viên 7,S17|S18|S16,T5-C|T2-C|T4-C|T6-C
+T8,Giảng viên 8,S10|S17,T2-S|T2-C|T3-S|T6-S
+T9,Giảng viên 9,S2|S1|S17,T7-S|T6-S|T4-C|T2-S
+T10,Giảng viên 10,S13|S11|S15,T6-C|T4-C|T4-S|T7-S|T2-S
+T11,Giảng viên 11,S19|S4|S15|S16,T6-S|T2-S|T7-C|T6-C|T2-C
+T12,Giảng viên 12,S13|S11,T7-C|T5-C|T4-S|T3-S|T6-S|T5-S
+T13,Giảng viên 13,S3|S13,T5-S|T3-C|T2-S|T6-C|T4-S
+T14,Giảng viên 14,S5|S7,T6-C|T3-C|T5-S|T3-S|T7-C
+T15,Giảng viên 15,S19|S9|S7|S1,T3-S|T2-S|T4-S|T5-C

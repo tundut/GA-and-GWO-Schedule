@@ -8,6 +8,7 @@ def genetic_algorithm(teachers, classes, subjects, rooms, timeslots, log,
                   for _ in range(pop_size)]
     best_fit, best_ind, stagnation = 0, None, 0
     start = time.time()
+    history = []
 
     for gen in range(generations):
         fits = [fitness(ind, teachers, rooms, classes, subjects) for ind in population]
@@ -31,6 +32,8 @@ def genetic_algorithm(teachers, classes, subjects, rooms, timeslots, log,
         else:
             stagnation += 1
 
+        history.append(best_fit)
+
         if stagnation >= 30:
             for _ in range(5):
                 population.append(create_individual(classes, teachers, rooms, timeslots, subjects))
@@ -49,4 +52,4 @@ def genetic_algorithm(teachers, classes, subjects, rooms, timeslots, log,
 
     elapsed = time.time() - start
     log.insert(tk.END, f"\n🎯 GA Fitness cuối cùng: {best_fit:.4f} (Time: {elapsed:.2f}s)\n")
-    return best_ind, best_fit
+    return best_ind, best_fit, history
