@@ -14,7 +14,7 @@ class TimetableApp:
     def __init__(self, root):
         self.root = root
         self.root.title("🧬 GA vs 🐺 GWO - So sánh lập lịch thời khóa biểu")
-        self.root.geometry("1350x850")
+        self.root.geometry("1280x600")
         self.root.minsize(1100, 700)
 
         # Khởi tạo các biến trạng thái (thay thế cho biến toàn cục)
@@ -52,12 +52,12 @@ class TimetableApp:
 
         tk.Label(frame_top, text="Quần thể:").grid(row=0, column=2)
         self.entry_pop = tk.Entry(frame_top, width=5)
-        self.entry_pop.insert(0, "80")
+        self.entry_pop.insert(0, "120")
         self.entry_pop.grid(row=0, column=3)
 
         tk.Label(frame_top, text="Thế hệ:").grid(row=0, column=4)
         self.entry_gen = tk.Entry(frame_top, width=5)
-        self.entry_gen.insert(0, "100")
+        self.entry_gen.insert(0, "300")
         self.entry_gen.grid(row=0, column=5)
 
         tk.Label(frame_top, text="Đột biến:").grid(row=0, column=6)
@@ -176,12 +176,14 @@ class TimetableApp:
 
         # =============== GA ===============
         self.log_ga.insert(tk.END, "🚀 Đang chạy Genetic Algorithm...\n")
+        self.log_ga.see(tk.END)
         self.log_ga.update()
         start_ga = time.time()
         self.ga_result, self.ga_fit, self.ga_history = genetic_algorithm(
             teachers, classes, subjects, rooms, timeslots, self.log_ga, pop, gen, mut)
         self.ga_time = time.time() - start_ga
         self.log_ga.insert(tk.END, f"\n✅ GA hoàn tất\nThời gian: {self.ga_time:.2f}s\nBest: {self.ga_fit:.4f}\n")
+        self.log_ga.see(tk.END)
 
         # =============== GWO ===============
         self.log_gwo.insert(tk.END, "🐺 Đang chạy Grey Wolf Optimizer...\n")
