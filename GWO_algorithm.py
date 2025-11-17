@@ -90,18 +90,14 @@ def gwo_algorithm(teachers, classes, subjects, rooms, timeslots, log,
         population = [repair(wolf, teachers, rooms, timeslots, subjects) for wolf in new_population[:pop_size]]
 
         history.append(best_fit)
-        if gen % 20 == 0 or best_fit == 1.0:
+        if gen % 20 == 0:
             avg_fit = sum(fits)/len(fits)
             log.insert(tk.END, f"GWO Gen {gen}: best={best_fit:.4f}, avg={avg_fit:.4f}\n")
             log.see(tk.END)
             log.update()
 
-        if best_fit == 1.0:
-            log.insert(tk.END, f"\n🎉 GWO: Lịch hoàn hảo ở thế hệ {gen}!\n")
-            break
-
     elapsed = time.time() - start
-    log.insert(tk.END, f"\n🎯 GWO Fitness cuối cùng: {best_fit:.4f} (Time: {elapsed:.2f}s)\n")
+    log.insert(tk.END, f"\n🎯 GWO Fitness cao nhất: {best_fit:.4f} (Time: {elapsed:.2f}s)\n")
     log.see(tk.END)
     log.update()
 

@@ -102,19 +102,26 @@ def crossover(p1, p2):
     return p1[:point] + p2[point:], p2[:point] + p1[point:]
 
 
-def mutate(ind, rate, teachers, rooms, timeslots):
+def mutate(ind, rate, teachers, rooms, timeslots, subjects):
     """Đột biến ngẫu nhiên một gen."""
     for i in range(len(ind)):
         if random.random() < rate:
             cls, sub, teacher, room, slot = ind[i]
             choice = random.choice(["room", "slot", "teacher"])
             if choice == "room":
-                room = random.choice(list(rooms.keys()))
+                subj_type = subjects.get(sub, "Lecture")
+                valid_rooms = [r for r, d in rooms.items() if d["type"] == subj_type]
+                room = random.choice(valid_rooms) if valid_rooms else random.choice(list(rooms.keys()))
             elif choice == "slot":
-                slot = random.choice(timeslots)
+                avail = teachers.get(teacher, {}).get("available", [])
+                slot = random.choice(avail) if avail else random.choice(timeslots)
             elif choice == "teacher":
                 valid_teachers = [t for t, d in teachers.items() if sub in d["subjects"]]
                 if valid_teachers:
                     teacher = random.choice(valid_teachers)
+                    # Khi đổi giáo viên, ưu tiên chọn slot phù hợp với lịch rảnh của GV mới
+                    avail_new = teachers.get(teacher, {}).get("available", [])
+                    if avail_new:
+                        slot = random.choice(avail_new)
             ind[i] = (cls, sub, teacher, room, slot)
     return ind

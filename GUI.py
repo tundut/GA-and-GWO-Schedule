@@ -65,8 +65,9 @@ class TimetableApp:
         self.entry_mut.insert(0, "0.2")
         self.entry_mut.grid(row=0, column=7)
 
-        tk.Button(frame_top, text="⚙️ Chạy GA & GWO", bg="#27ae60", fg="white",
-                command=self.run_algorithms).grid(row=0, column=8, padx=10)
+        self.btn_run = tk.Button(frame_top, text="⚙️ Chạy GA & GWO", bg="#27ae60", fg="white",
+                      command=self.run_algorithms)
+        self.btn_run.grid(row=0, column=8, padx=10)
 
     def _create_main_frames(self):
         """Tạo 2 khung chính cho GA và GWO."""
@@ -142,6 +143,11 @@ class TimetableApp:
 
     def run_algorithms(self):
         """Chạy cả hai thuật toán và cập nhật giao diện."""
+        # Ngăn click nhiều lần chạy chồng: disable nút trong suốt quá trình
+        if hasattr(self, "btn_run"):
+            self.btn_run.config(state="disabled")
+            self.root.update_idletasks()
+
         selected_folder = self.dataset_var.get().strip()
 
         # Map tự động để tránh lỗi do đổi tên thư mục
@@ -174,25 +180,33 @@ class TimetableApp:
         self.log_ga.delete(1.0, tk.END)
         self.log_gwo.delete(1.0, tk.END)
 
-        # =============== GA ===============
-        self.log_ga.insert(tk.END, "🚀 Đang chạy Genetic Algorithm...\n")
-        self.log_ga.see(tk.END)
-        self.log_ga.update()
-        start_ga = time.time()
-        self.ga_result, self.ga_fit, self.ga_history = genetic_algorithm(
-            teachers, classes, subjects, rooms, timeslots, self.log_ga, pop, gen, mut)
-        self.ga_time = time.time() - start_ga
-        self.log_ga.insert(tk.END, f"\n✅ GA hoàn tất\nThời gian: {self.ga_time:.2f}s\nBest: {self.ga_fit:.4f}\n")
-        self.log_ga.see(tk.END)
+        try:
+            # =============== GA ===============
+            self.log_ga.insert(tk.END, "🚀 Đang chạy Genetic Algorithm...\n")
+            self.log_ga.see(tk.END)
+            self.log_ga.update()
+            start_ga = time.time()
+            self.ga_result, self.ga_fit, self.ga_history = genetic_algorithm(
+                teachers, classes, subjects, rooms, timeslots, self.log_ga, pop, gen, mut)
+            self.ga_time = time.time() - start_ga
+            self.log_ga.insert(tk.END, f"\n✅ GA hoàn tất\nThời gian: {self.ga_time:.2f}s\nBest: {self.ga_fit:.4f}\n")
+            self.log_ga.see(tk.END)
 
-        # =============== GWO ===============
-        self.log_gwo.insert(tk.END, "🐺 Đang chạy Grey Wolf Optimizer...\n")
+            # =============== GWO ===============
+            self.log_gwo.insert(tk.END, "🐺 Đang chạy Grey Wolf Optimizer...\n")
+            self.log_gwo.update()
+            start_gwo = time.time()
+            self.gwo_result, self.gwo_fit, self.gwo_history = gwo_algorithm(
+                teachers, classes, subjects, rooms, timeslots, self.log_gwo, pop, gen)
+            self.gwo_time = time.time() - start_gwo
+            self.log_gwo.insert(tk.END, f"\n✅ GWO hoàn tất\nThời gian: {self.gwo_time:.2f}s\nBest: {self.gwo_fit:.4f}\n")
+        finally:
+            # Re-enable run button sau khi hoàn tất/ lỗi
+            if hasattr(self, "btn_run"):
+                self.btn_run.config(state="normal")
+                self.root.update_idletasks()
+        self.log_gwo.see(tk.END)
         self.log_gwo.update()
-        start_gwo = time.time()
-        self.gwo_result, self.gwo_fit, self.gwo_history = gwo_algorithm(
-            teachers, classes, subjects, rooms, timeslots, self.log_gwo, pop, gen)
-        self.gwo_time = time.time() - start_gwo
-        self.log_gwo.insert(tk.END, f"\n✅ GWO hoàn tất\nThời gian: {self.gwo_time:.2f}s\nBest: {self.gwo_fit:.4f}\n")
 
         # Cập nhật bảng
         self._fill_table(self.tree_ga, self.ga_result)
